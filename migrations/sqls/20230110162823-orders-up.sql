@@ -1,0 +1,2 @@
+/* Replace with your SQL commands */
+CREATE TABLE orders (id SERIAL PRIMARY KEY, product_id integer REFERENCES products(id), quantity INTEGER, user_id INTEGER REFERENCES users(id), order_status VARCHAR, CHECK (order_status= 'active' OR order_status = 'complete'));
