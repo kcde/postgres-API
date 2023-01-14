@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": " npx tsc && jasmine",
+    "migrate": "db-migrate up",
+    "test": " db-migrate --env test up && npx tsc && jasmine  && db-migrate  --env test reset ",
     "tsc": "tsc",
     "pretty": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "lint": "eslint . --ext .ts"

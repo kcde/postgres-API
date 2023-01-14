@@ -7,12 +7,10 @@ import userStore from "../models/user";
 import jwt from "jsonwebtoken";
 
 export async function createUser(req: Request, res: Response) {
-  const unHashedPassword = req.body.password;
+  const unHashedPassword: string = req.body.password;
   const jwtPayload = {
     username: req.body.username as unknown as string,
   };
-  console.log(process.env.SALT_ROUNDS);
-
   //Hash password
   bcrypt.hash(
     unHashedPassword,
@@ -55,11 +53,28 @@ export async function createUser(req: Request, res: Response) {
           return res.status(201).json({
             username: createDetails.username,
             token: token,
-            firstName: createDetails.firstName,
+            firstName: createDetails.firstName || null,
             lastName: createDetails.lastName || null,
           });
         }
       );
     }
   );
+}
+
+export async function getUsers(req: Request, res: Response) {
+  //console.log(req.headers);
+  const allUsers = await userStore.index();
+  res.json(allUsers);
+}
+
+export async function getUser(req: Request, res: Response) {
+  const userId: string = req.params.userId;
+  const result = await userStore.read(userId);
+
+  if (result) {
+    return res.json(result);
+  }
+
+  res.status(404).json({ error: "User not found" });
 }
