@@ -14,7 +14,6 @@ const {
 } = process.env;
 
 let db: Pool;
-console.log(process.env.ENV);
 
 if (ENV === "test") {
   db = new Pool({

@@ -2,10 +2,10 @@ import db from "../database";
 import { dbQuery } from "../utils/dbquery";
 
 type Product = {
-  id: number;
+  id?: number;
   name: string;
   price: number;
-  category_id: number;
+  category_id?: number;
 };
 
 const productStore = {
@@ -21,6 +21,14 @@ const productStore = {
     const sqlArgs: Array<any> = [id];
     const result = await dbQuery(db, sql, sqlArgs);
     return result.rows[0];
+  },
+
+  create: async (product: Product): Promise<any> => {
+    const sql =
+      "INSERT INTO products (name,price,category_id) VALUES ($1,$2,$3)";
+    const sqlArgs = [product.name, product.price, product.category_id];
+    const result = dbQuery(db, sql, sqlArgs);
+    return result;
   },
 };
 
