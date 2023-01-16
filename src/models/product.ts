@@ -1,10 +1,10 @@
 import db from "../database";
 import { dbQuery } from "../utils/dbquery";
 
-type Product = {
+export type Product = {
   id?: number;
   name: string;
-  price: number;
+  price: number | string;
   category_id?: number;
 };
 
