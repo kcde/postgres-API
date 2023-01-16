@@ -1,8 +1,17 @@
 import { Application, Request, Response } from "express";
 import productStore from "../models/product";
+import productServices from "../services/productServices";
 
 export async function getProducts(req: Request, res: Response) {
-  console.log(req.query);
+  const category: string = req.query.category as unknown as string;
+  if (category) {
+    const products = await productServices.getProductsByCategory(category);
+
+    if (products.length > 0) {
+      return res.json(products);
+    }
+    return res.status(404).json({ error: "no product in this category" });
+  }
 
   const products = await productStore.index();
   res.json(products);
