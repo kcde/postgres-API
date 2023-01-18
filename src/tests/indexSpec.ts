@@ -15,7 +15,7 @@ describe("Check api route", () => {
 
 //this token should be used for all requests
 const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Imxhc2gifQ.oHo7cV8-fGQRem4lezaininoQuk0XyPTVzXQuAXqiXE";
+  "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphY2t5In0.XCdM6kfOX1--sCbyjJV_KUsq-geSzeoCOaOl_ny4jz4";
 
 describe("Test /users route", () => {
   it("should return a response of 200 when /api/users route is hit", async () => {
@@ -68,5 +68,16 @@ describe("Test /products route", () => {
       .send(createdProduct);
     expect(response.status).toBe(201);
     expect(response.body).toEqual(createdProduct);
+  });
+});
+
+describe("Test /orders route", () => {
+  it("should return a user's orders based on token payload", async () => {
+    //token payload has a username of jacky
+    const response = await request
+      .get("/api/orders")
+      .set("Authorization", "Bearer " + token);
+
+    expect(response.status).toBe(200);
   });
 });

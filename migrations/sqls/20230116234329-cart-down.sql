@@ -1,3 +1,3 @@
 /* Replace with your SQL commands */
 
-DROP TABLE products CASCADE;
+DROP TABLE carts CASCADE;

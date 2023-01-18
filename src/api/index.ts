@@ -1,5 +1,6 @@
 import { Router } from "express";
 import app from "../server";
+import orders from "./routes/orders";
 import products from "./routes/products";
 import users from "./routes/users";
 
@@ -11,5 +12,6 @@ api.get("/", (_req, res) => {
 
 api.use("/products", products);
 api.use("/users", users);
+api.use("/orders", orders);
 
 export default api;

@@ -5,7 +5,7 @@ describe("test user model", () => {
   //this value should have already been added to the db at migration
   const expectedUser: User = {
     id: 1,
-    username: "user1",
+    username: "jacky",
   };
 
   it("should return an Array of users when userStore.index is run", async () => {

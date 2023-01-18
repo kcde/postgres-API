@@ -19,10 +19,11 @@ export default async function verifyToken(
   jwt.verify(
     token,
     process.env.JWT_PRIVATE_KEY as unknown as string,
-    (err, _decoded) => {
+    (err, decoded) => {
       if (err) {
         return res.status(401).json({ error: err.message });
       }
+      res.locals.JWT_PAYLOAD = decoded;
 
       next();
     }
