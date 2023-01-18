@@ -5,9 +5,9 @@ describe("Test order model", () => {
   it("Should return an array of orders", async () => {
     const expectedOrder: Order = {
       id: 1,
-      name: "white bluse",
-      price: "$500.00",
-      quantity: 3,
+      name: "checkered shirt",
+      price: "$200.00",
+      quantity: 5,
       order_status: "active",
     };
     const result = await orderStore.read("jacky");

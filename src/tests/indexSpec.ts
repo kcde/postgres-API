@@ -18,6 +18,14 @@ const token =
   "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphY2t5In0.XCdM6kfOX1--sCbyjJV_KUsq-geSzeoCOaOl_ny4jz4";
 
 describe("Test /users route", () => {
+  it("should create a user", async () => {
+    const response = await request
+      .post("/api/users")
+      .send({ username: "user", password: "password" });
+
+    expect(response.status).toBe(201);
+  });
+
   it("should return a response of 200 when /api/users route is hit", async () => {
     const response = await request
       .get("/api/users")
