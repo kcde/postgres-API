@@ -1,9 +1,8 @@
-
 # Storfront API
 
 An API for an ecommerce that allows basic CRUD operations and authentication
 
-
+Please make sure to read this documentation
 
 ## Environment Variables
 
@@ -13,28 +12,24 @@ To run this project, you will need to add the following environment variables to
 
 `DB_TEST=storefront_test`
 
-`POSTGRES_USER`
+`POSTGRES_USER=postgres`
 
-`POSTGRES_PASSWORD`
+`POSTGRES_PASSWORD=postgres`
 
-`POSTGRES_HOST`
+`POSTGRES_HOST=localhost`
 
-`JWT_PRIVATE_KEY`
+`JWT_PRIVATE_KEY="keep a secret`
 
-`SALT_ROUNDS`
+`SALT_ROUNDS=10`
 
-`ENV`
-
-
-
-
-
+`ENV=dev`
 
 ## Local Set up
 
 Before the project can be succefully run locally, we need to set up some tools in our local machine
 
-#### Docker 
+#### Docker
+
 Docker needs to be installed in your local machine. Docker is used to run the container what holds the database environment, whic is postgres.
 
 [Download Docker](https://www.docker.com/)
@@ -43,12 +38,12 @@ Once we have docker installed, open it up and start the docker engine.
 
 Open up the project folder in the terminal
 
-
 ```bash
   cd postgres-API
 ```
 
 Run this command to pull the postgres docker image and start the container in silent mode.
+
 ```bash
 docker compose up -d
 ```
@@ -99,12 +94,7 @@ CREATE DATABASE storefront
 CREATE DATABASE storefront_test
 ```
 
-
-
-
-
 ## Run Locally
-
 
 Go to the project directory
 
@@ -119,6 +109,7 @@ Install dependencies
 ```
 
 Migrate database
+
 ```bash
 db-migrate up
 ```
@@ -129,28 +120,17 @@ Start the server
   npm run watch
 ```
 
-
 ## Running Tests
 
 To run tests, run the following command
 
 ```bash
-  npm run test
+  ENV=test npm run test
 ```
-
 
 ## API Reference
 
 ### users route
-
-
-
-
-
-
-
-
-
 
 ### Products route
 
@@ -162,7 +142,6 @@ To run tests, run the following command
 
 Returns all products in the database
 
-
 #### Get all products by category
 
 ```http
@@ -171,14 +150,12 @@ Returns all products in the database
 
 Returns all products that matches the the category query
 
-
-
-
 #### Get a product
 
 ```http
   GET /api/products/{id}
 ```
+
 Returns a product using the id parameter
 
 !! Requires token in the request headers object.
@@ -189,46 +166,47 @@ Returns a product using the id parameter
   POST /api/products
 ```
 
-Creates a product.  Pass an object with the name and price key value pair;
+Creates a product. Pass an object with the name and price key value pair;
 
-
-
-| Body | Type     | Description                |         |
-| :-------- | :------- | :------------------------- | :-------
-| `name` | `string` | Name of the product|         |
-| `price` | `number` | price of the product|         |
+| Body    | Type     | Description          |     |
+| :------ | :------- | :------------------- | :-- |
+| `name`  | `string` | Name of the product  |     |
+| `price` | `number` | price of the product |     |
 
 ### Users route
 
 #### Get users
+
 ```http
   GET /api/users/
 ```
+
 Returns all users
 
 !! Requires token in the request headers object.
 
-
 #### Get user
+
 ```http
   GET /api/users/{userId}
 ```
+
 Returns a user with the {userId} key
 
 !! Requires token in the request headers object.
 
-
 #### Create user
+
 ```bash
   POST /api/users/
 ```
+
 Create a new user with the info in request body
 
-
-| Body | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `username`      | `string` | unique username|
-| `password`      | `string` | user's password|
+| Body       | Type     | Description     |
+| :--------- | :------- | :-------------- |
+| `username` | `string` | unique username |
+| `password` | `string` | user's password |
 
 ### Orders route
 
@@ -239,8 +217,7 @@ instead of userId, username is going to be used. And this is gotten from the tok
 ```http
 GET /api/orders
 ```
+
 Returns all the orders by a user;
 
 !! Requires token in the request headers object.
-
-
