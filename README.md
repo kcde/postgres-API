@@ -1,54 +1,246 @@
-# Storefront Backend Project
 
-## Getting Started
+# Storfront API
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+An API for an ecommerce that allows basic CRUD operations and authentication
 
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
-- Node/Express for the application logic
-- dotenv from npm for managing environment variables
-- db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
 
-## Steps to Completion
 
-### 1. Plan to Meet Requirements
+## Environment Variables
 
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
+To run this project, you will need to add the following environment variables to your .env file
 
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
+`DB_NAME=storefront`
 
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+`DB_TEST=storefront_test`
 
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
+`POSTGRES_USER`
 
-### 2.  DB Creation and Migrations
+`POSTGRES_PASSWORD`
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
+`POSTGRES_HOST`
 
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
+`JWT_PRIVATE_KEY`
 
-### 3. Models
+`SALT_ROUNDS`
 
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
+`ENV`
 
-### 4. Express Handlers
 
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
 
-### 5. JWTs
 
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
 
-### 6. QA and `README.md`
 
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
+## Local Set up
 
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+Before the project can be succefully run locally, we need to set up some tools in our local machine
+
+#### Docker 
+Docker needs to be installed in your local machine. Docker is used to run the container what holds the database environment, whic is postgres.
+
+[Download Docker](https://www.docker.com/)
+
+Once we have docker installed, open it up and start the docker engine.
+
+Open up the project folder in the terminal
+
+
+```bash
+  cd postgres-API
+```
+
+Run this command to pull the postgres docker image and start the container in silent mode.
+```bash
+docker compose up -d
+```
+
+This should set up postgres based on the `docker-compose.yml` file in the project folder
+
+#### Database tables
+
+Now we need to setup our databases.
+you will need two for this project -
+
+1. storefront
+
+This is the main database
+
+2. storefront_test
+
+This is the database for test
+
+To create these databases, we need to open psql in the running container.
+
+Run
+
+```bash
+docker ps
+```
+
+to see the container id of the running container
+
+Copy the container iD and run this command
+
+```bash
+docker exec -it <container iD>  bash
+```
+
+We should now be able to run commands in the container
+
+Enter into psql with the default `postgres` user
+
+```bash
+psql -U postgres
+```
+
+Create the databases
+
+```bash
+CREATE DATABASE storefront
+CREATE DATABASE storefront_test
+```
+
+
+
+
+
+## Run Locally
+
+
+Go to the project directory
+
+```bash
+  cd postgres-API
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Migrate database
+```bash
+db-migrate up
+```
+
+Start the server
+
+```bash
+  npm run watch
+```
+
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  npm run test
+```
+
+
+## API Reference
+
+### users route
+
+
+
+
+
+
+
+
+
+
+### Products route
+
+#### Get all products
+
+```http
+  GET /api/products
+```
+
+Returns all products in the database
+
+
+#### Get all products by category
+
+```http
+  GET /api/products?category={category}
+```
+
+Returns all products that matches the the category query
+
+
+
+
+#### Get a product
+
+```http
+  GET /api/products/{id}
+```
+Returns a product using the id parameter
+
+!! Requires token in the request headers object.
+
+#### Create product
+
+```http
+  POST /api/products
+```
+
+Creates a product.  Pass an object with the name and price key value pair;
+
+
+
+| Body | Type     | Description                |         |
+| :-------- | :------- | :------------------------- | :-------
+| `name` | `string` | Name of the product|         |
+| `price` | `number` | price of the product|         |
+
+### Users route
+
+#### Get users
+```http
+  GET /api/users/
+```
+Returns all users
+
+!! Requires token in the request headers object.
+
+
+#### Get user
+```http
+  GET /api/users/{userId}
+```
+Returns a user with the {userId} key
+
+!! Requires token in the request headers object.
+
+
+#### Create user
+```bash
+  POST /api/users/
+```
+Create a new user with the info in request body
+
+
+| Body | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `username`      | `string` | unique username|
+| `password`      | `string` | user's password|
+
+### Orders route
+
+#### Get user order
+
+instead of userId, username is going to be used. And this is gotten from the token
+
+```http
+GET /api/orders
+```
+Returns all the orders by a user;
+
+!! Requires token in the request headers object.
+
+

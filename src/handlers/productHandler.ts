@@ -36,10 +36,14 @@ export async function createProduct(req: Request, res: Response) {
     return res.status(400).json({ error: "name and price is not provided" });
   }
 
+  if (!Number(price)) {
+    return res.status(400).json({ error: "price should be a number" });
+  }
+
   const newProduct = await productStore.create(req.body);
 
   if (newProduct.error) {
-    return res.status(400).json({ error: "Unable to create this user" });
+    return res.status(400).json({ error: "Unable to create this product" });
   }
 
   res.status(201).json(req.body);
