@@ -210,6 +210,32 @@ Create a new user with the info in request body
 
 ### Orders route
 
+#### create user order
+
+userid is gotten from the token
+
+```http
+POST /api/orders
+```
+
+Creates an order with a unique id
+!! Requires token in the request headers object.
+
+#### add product to cart
+
+userid is gotten from the token
+
+```http
+POST /api/orders/{orderid}
+```
+
+| Body         | Type     | Description                |
+| :----------- | :------- | :------------------------- |
+| `product_id` | `number` | unique product id          |
+| `quantity`   | `number` | quantity of product to add |
+
+!! Requires token in the request headers object.
+
 #### Get user order
 
 instead of userId, username is going to be used. And this is gotten from the token
