@@ -6,6 +6,8 @@ describe("test user model", () => {
   const expectedUser: User = {
     id: 1,
     username: "jacky",
+    first_name: "cactus",
+    last_name: "jack",
   };
 
   it("should return an Array of users when userStore.index is run", async () => {

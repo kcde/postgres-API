@@ -5,4 +5,4 @@ ADD COLUMN
 username VARCHAR UNIQUE;
 
 
-INSERT INTO users (username,password) VALUES ('jacky','password1');
+INSERT INTO users (username,password,first_name,last_name) VALUES ('jacky','password1','cactus','jack');

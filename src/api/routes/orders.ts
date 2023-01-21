@@ -5,11 +5,17 @@ import {
   createProduct,
 } from "../../handlers/productHandler";
 import verifyToken from "../../middlewares/verifyToken";
-import { getUserOrders } from "../../handlers/orderHandler";
+import {
+  addToCart,
+  createOrder,
+  getUserOrders,
+} from "../../handlers/orderHandler";
 const orders = Router();
 
 orders.get("/", verifyToken, getUserOrders);
-//orders.post("/", verifyToken, createProduct);
-//orders.get("/:productId", getProduct);
+orders.post("/:orderId", verifyToken, addToCart);
+
+orders.post("/", verifyToken, createOrder);
+// orders.get("/:productId", verifyToken, getProduct);
 
 export default orders;

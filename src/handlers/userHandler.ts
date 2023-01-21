@@ -3,61 +3,59 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 dotenv.config();
 
-import userStore from "../models/user";
+import userStore, { UserDetail, User } from "../models/user";
 import jwt from "jsonwebtoken";
 
 export async function createUser(req: Request, res: Response) {
-  const unHashedPassword: string = req.body.password;
-  const jwtPayload = {
+  const createDetails: UserDetail = {
     username: req.body.username as unknown as string,
+    password: req.body.password as unknown as string,
+    firstName: req.body.firstName as unknown as string,
+    lastName: req.body.lastName as unknown as string,
   };
+
+  for (let key in createDetails) {
+    //@ts-ignore
+    if (!createDetails[key]) {
+      return res.status(400).json({ error: `Please provide ${key}` });
+    }
+  }
+
   //Hash password
   bcrypt.hash(
-    unHashedPassword,
+    createDetails.password,
     Number(process.env.SALT_ROUNDS as unknown as number),
-    function (err, hash) {
+    async function async(err, hash) {
       if (err) {
         console.log(err);
 
         return res.status(400).json({ error: "unable to create user hash" });
       }
 
-      const hashedPassword = hash;
+      createDetails.password = hash;
+
+      //send details to db
+
+      try {
+        let result = await userStore.create(createDetails);
+
+        jwt.sign(
+          JSON.stringify({ userid: result.id }),
+          process.env.JWT_PRIVATE_KEY as unknown as string,
+          async (err, token) => {
+            if (err) {
+              console.log(err);
+              return res.status(400).json({ error: "unable to create user" });
+            }
+
+            return res.status(201).json({ ...result, token });
+          }
+        );
+      } catch {
+        return res.status(400).json({ error: "Unable to create this user" });
+      }
+
       // generate token
-      jwt.sign(
-        JSON.stringify(jwtPayload),
-        process.env.JWT_PRIVATE_KEY as unknown as string,
-        async (err, token) => {
-          if (err) {
-            console.log(err);
-            return res.status(400).json({ error: "unable to create user" });
-          }
-
-          const createDetails = {
-            username: req.body.username,
-            password: hashedPassword,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-          };
-
-          //send details to db
-          let result = await userStore.create(createDetails);
-          console.log(result);
-
-          if (result.error) {
-            return res
-              .status(400)
-              .json({ error: "Unable to create this user" });
-          }
-
-          return res.status(201).json({
-            username: createDetails.username,
-            token: token,
-            firstName: createDetails.firstName || null,
-            lastName: createDetails.lastName || null,
-          });
-        }
-      );
     }
   );
 }

@@ -39,12 +39,10 @@ export async function createProduct(req: Request, res: Response) {
   if (!Number(price)) {
     return res.status(400).json({ error: "price should be a number" });
   }
-
-  const newProduct = await productStore.create(req.body);
-
-  if (newProduct.error) {
+  try {
+    const createdProduct = await productStore.create(req.body);
+    res.status(201).json(createdProduct);
+  } catch {
     return res.status(400).json({ error: "Unable to create this product" });
   }
-
-  res.status(201).json(req.body);
 }

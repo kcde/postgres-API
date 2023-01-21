@@ -23,12 +23,16 @@ const productStore = {
     return result.rows[0];
   },
 
-  create: async (product: Product): Promise<any> => {
+  create: async (product: Product): Promise<Product> => {
     const sql =
-      "INSERT INTO products (name,price,category_id) VALUES ($1,$2,$3)";
-    const sqlArgs = [product.name, product.price, product.category_id];
-    const result = dbQuery(db, sql, sqlArgs);
-    return result;
+      "INSERT INTO products (name,price,category_id) VALUES ($1,$2,$3 ) RETURNING *";
+    const sqlArgs: Array<any> = [
+      product.name,
+      product.price,
+      product.category_id,
+    ];
+    const result = await dbQuery(db, sql, sqlArgs);
+    return result.rows[0];
   },
 };
 
