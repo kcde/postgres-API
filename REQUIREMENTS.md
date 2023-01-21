@@ -4,6 +4,38 @@ The company stakeholders want to create an online storefront to showcase their g
 
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application.
 
+### Database Schema
+
+#### Users table
+
+| id        | username  | first_name | last_name |
+| :-------- | :-------- | :--------- | :-------- |
+| `integer` | `VARCHAR` | `VARCHAR`  | `VARCHAR` |
+
+#### Products table
+
+| id        | name      | category(fkey) |
+| :-------- | :-------- | :------------- |
+| `integer` | `VARCHAR` | `integer`      |
+
+#### Categories table
+
+| id        | name      |
+| :-------- | :-------- |
+| `integer` | `VARCHAR` |
+
+#### orders table
+
+| user_id(fkey) | order_status |
+| :------------ | :----------- |
+| `integer`     | `VARCHAR`    |
+
+#### carts table
+
+| product_id(fkey) | order_id (fkey) | quantity  |
+| :--------------- | :-------------- | :-------- |
+| `integer`        | `integer`       | `integer` |
+
 ## API Endpoints
 
 #### Products
@@ -48,3 +80,123 @@ These are the notes from a meeting with the frontend developer that describe wha
 - quantity of each product in the order
 - user_id
 - status of order (active or complete)
+
+## API Reference
+
+### users route
+
+### Products route
+
+#### Get all products
+
+```http
+  GET /api/products
+```
+
+Returns all products in the database
+
+#### Get all products by category
+
+```http
+  GET /api/products?category={category}
+```
+
+Returns all products that matches the the category query
+
+#### Get a product
+
+```http
+  GET /api/products/{id}
+```
+
+Returns a product using the id parameter
+
+!! Requires token in the request headers object.
+
+#### Create product
+
+```http
+  POST /api/products
+```
+
+Creates a product. Pass an object with the name and price key value pair;
+
+| Body    | Type     | Description          |     |
+| :------ | :------- | :------------------- | :-- |
+| `name`  | `string` | Name of the product  |     |
+| `price` | `number` | price of the product |     |
+
+### Users route
+
+#### Get users
+
+```http
+  GET /api/users/
+```
+
+Returns all users
+
+!! Requires token in the request headers object.
+
+#### Get user
+
+```http
+  GET /api/users/{userId}
+```
+
+Returns a user with the {userId} key
+
+!! Requires token in the request headers object.
+
+#### Create user
+
+```bash
+  POST /api/users/
+```
+
+Create a new user with the info in request body
+
+| Body       | Type     | Description     |
+| :--------- | :------- | :-------------- |
+| `username` | `string` | unique username |
+| `password` | `string` | user's password |
+
+### Orders route
+
+#### create user order
+
+userid is gotten from the token
+
+```http
+POST /api/orders
+```
+
+Creates an order with a unique id
+!! Requires token in the request headers object.
+
+#### add product to cart
+
+userid is gotten from the token
+
+```http
+POST /api/orders/{orderid}
+```
+
+| Body         | Type     | Description                |
+| :----------- | :------- | :------------------------- |
+| `product_id` | `number` | unique product id          |
+| `quantity`   | `number` | quantity of product to add |
+
+!! Requires token in the request headers object.
+
+#### Get user order
+
+instead of userId, username is going to be used. And this is gotten from the token
+
+```http
+GET /api/orders
+```
+
+Returns all the orders by a user;
+
+!! Requires token in the request headers object.
