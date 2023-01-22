@@ -105,7 +105,6 @@ describe("Test /products route", () => {
       .set("Authorization", "Bearer " + user.body.token);
 
     const response = await request.get("/api/products?category=men");
-    console.log(response);
 
     expect(response.status).toBe(200);
   });

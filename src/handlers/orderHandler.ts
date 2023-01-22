@@ -39,7 +39,6 @@ export async function addToCart(req: Request, res: Response) {
 
 export async function getUserOrders(_req: Request, res: Response) {
   const { userid } = res.locals.JWT_PAYLOAD;
-  console.log(userid);
 
   try {
     const result = await orderStore.read(userid);

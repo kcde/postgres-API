@@ -131,7 +131,7 @@ Start the server
 To run tests, run the following command
 
 ```bash
-  ENV=test npm run test
+   npm run test
 ```
 
 ## API Reference

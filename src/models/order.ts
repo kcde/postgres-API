@@ -19,7 +19,7 @@ const orderStore = {
   read: async (id: number): Promise<Order[]> => {
     const sql =
       "SELECT orders.id , order_status, products.name, products.price,carts.quantity  FROM orders INNER JOIN carts ON orders.id = carts.order_id INNER JOIN products ON products.id = carts.product_id INNER JOIN users ON user_id = $1";
-    const sqlArgs: Array<any> = [id];
+    const sqlArgs: Array<string | number> = [id];
     const result = await dbQuery(db, sql, sqlArgs);
     return result.rows;
   },
@@ -27,7 +27,7 @@ const orderStore = {
   create: async (userId: number) => {
     const sql =
       "INSERT INTO orders (user_id, order_status) VALUES ($1, 'active') RETURNING *";
-    const sqlArgs: Array<any> = [userId];
+    const sqlArgs: Array<string | number> = [userId];
     const result = await dbQuery(db, sql, sqlArgs);
     return result.rows[0];
   },

@@ -9,7 +9,7 @@ import { Pool } from "pg";
 export async function dbQuery(
   db: Pool,
   sqlQuery: string,
-  sqlArgs?: Array<any>
+  sqlArgs?: Array<string | number | undefined>
 ): Promise<any> {
   try {
     const connect = await db.connect();

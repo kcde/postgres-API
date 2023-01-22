@@ -25,7 +25,7 @@ const userStore = {
   create: async (details: UserDetail): Promise<User> => {
     const sql =
       "INSERT INTO users (first_name, last_name,username,password) VALUES ($1,$2,$3,$4) RETURNING id, first_name, last_name, username;";
-    const sqlArgs: Array<any> = [
+    const sqlArgs: Array<string | number> = [
       details.firstName,
       details.lastName,
       details.username,

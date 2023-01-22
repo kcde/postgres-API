@@ -18,7 +18,7 @@ const productStore = {
 
   read: async (id: number): Promise<Product> => {
     const sql = "SELECT * FROM products WHERE id = $1";
-    const sqlArgs: Array<any> = [id];
+    const sqlArgs: Array<string | number> = [id];
     const result = await dbQuery(db, sql, sqlArgs);
     return result.rows[0];
   },
@@ -26,7 +26,7 @@ const productStore = {
   create: async (product: Product): Promise<Product> => {
     const sql =
       "INSERT INTO products (name,price,category_id) VALUES ($1,$2,$3 ) RETURNING *";
-    const sqlArgs: Array<any> = [
+    const sqlArgs: Array<string | number | undefined> = [
       product.name,
       product.price,
       product.category_id,
