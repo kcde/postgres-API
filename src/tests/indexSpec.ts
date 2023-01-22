@@ -85,6 +85,30 @@ describe("Test /products route", () => {
     expect(response.status).toBe(200);
     expect(response.body).toContain(createdProduct.body);
   });
+  it("should return all products in men category", async () => {
+    let user = await request.post("/api/users").send({
+      username: "condoe",
+      password: "password",
+      firstName: "condoe",
+      lastName: "doe",
+    });
+
+    const product: Product = {
+      name: "Nike shoe",
+      price: "200000",
+      category_id: 1,
+    };
+
+    const createdProduct = await request
+      .post("/api/products")
+      .send(product)
+      .set("Authorization", "Bearer " + user.body.token);
+
+    const response = await request.get("/api/products?category=men");
+    console.log(response);
+
+    expect(response.status).toBe(200);
+  });
 
   it("should return a product", async () => {
     const response = await request.get("/api/products/1");

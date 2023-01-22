@@ -41,10 +41,13 @@ export async function getUserOrders(_req: Request, res: Response) {
   const { userid } = res.locals.JWT_PAYLOAD;
   console.log(userid);
 
-  const result = await orderStore.read(userid);
-  if (result.length) {
-    return res.json(result);
+  try {
+    const result = await orderStore.read(userid);
+    if (result.length) {
+      return res.json(result);
+    }
+    res.status(404).json({ error: "No orders for this user" });
+  } catch {
+    throw new Error("Unable to get users order");
   }
-
-  res.status(404).json({ error: "No orders for this user" });
 }

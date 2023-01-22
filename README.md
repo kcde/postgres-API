@@ -50,7 +50,13 @@ docker compose up -d
 
 This should set up postgres based on the `docker-compose.yml` file in the project folder
 
-#### Database tables
+## Database port
+
+The postgres database will run on the default port of `:5432`
+
+Please make sure no other application or instance of postgres is using this port.
+
+## Database tables
 
 Now we need to setup our databases.
 you will need two for this project -

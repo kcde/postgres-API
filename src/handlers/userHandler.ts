@@ -68,11 +68,14 @@ export async function getUsers(req: Request, res: Response) {
 
 export async function getUser(req: Request, res: Response) {
   const userId: string = req.params.userId;
-  const result = await userStore.read(userId);
 
-  if (result) {
-    return res.json(result);
+  try {
+    const result = await userStore.read(userId);
+
+    if (result) {
+      return res.json(result);
+    }
+  } catch {
+    res.status(404).json({ error: "User not found" });
   }
-
-  res.status(404).json({ error: "User not found" });
 }
